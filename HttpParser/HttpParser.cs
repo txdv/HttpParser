@@ -62,7 +62,7 @@ namespace Test
 		public IntPtr on_message_complete;
 	}
 
-	enum http_method
+	public enum http_method
 	{
 		HTTP_DELETE,
 		HTTP_GET,
@@ -97,9 +97,41 @@ namespace Test
 		HTTP_BOTH
 	}
 
-	enum http_errno
+	public enum http_errno
 	{
-		HPE_OK
+		HPE_OK,
+
+		HPE_CB_message_begin,
+		HPE_CB_path,
+		HPE_CB_query_string,
+		HPE_CB_url,
+		HPE_CB_fragment,
+		HPE_CB_header_field,
+		HPE_CB_header_value,
+		HPE_CB_headers_complete,
+		HPE_CB_body,
+		HPE_CB_message_complete,
+
+		HPE_INVALID_EOF_STATE,
+		HPE_HEADER_OVERFLOW,
+		HPE_CLOSED_CONNECTION,
+		HPE_INVALID_VERSION,
+		HPE_INVALID_STATUS,
+		HPE_INVALID_METHOD,
+		HPE_INVALID_URL,
+		HPE_INVALID_HOST,
+		HPE_INVALID_PORT,
+		HPE_INVALID_PATH,
+		HPE_INVALID_QUERY_STRING,
+		HPE_INVALID_FRAGMENT,
+		HPE_LF_EXPECTED,
+		HPE_INVALID_HEADER_TOKEN,
+		HPE_INVALID_CONTENT_LENGTH,
+		HPE_INVALID_CHUNK_SIZE,
+		HPE_INVALID_CONSTANT,
+		HPE_INVALID_INTERNAL_STATE,
+		HPE_STRICT,
+		HPE_UNKNOWN
 	}
 
 	class ByteBuffer : IDisposable
@@ -269,9 +301,59 @@ namespace Test
 			}
 		}
 
+		public int HttpMajor {
+			get {
+				return parser->http_major;
+			}
+		}
+
+		public int HttpMinor {
+			get {
+				return parser->http_minor;
+			}
+		}
+
+		public int StatusCode {
+			get {
+				return parser->status_code;
+			}
+		}
+
+		public http_method Method {
+			get {
+				return (http_method)parser->method;
+			}
+		}
+
 		public bool Upgrade {
 			get {
 				return parser->Upgrade;
+			}
+		}
+
+		public http_errno Errno {
+			get {
+				return parser->Error;
+			}
+		}
+
+		public string ErrorName {
+			get {
+				return new string(http_errno_name(Errno));
+			}
+		}
+
+		public string ErrorDescription {
+			get {
+				return new string(http_errno_description(Errno));
+			}
+		}
+
+		public void YieldException()
+		{
+			if (Errno != http_errno.HPE_OK) {
+				// TODO: create exceptions for every error
+				throw new Exception(string.Format("{0}: {1}", ErrorName, ErrorDescription));
 			}
 		}
 
