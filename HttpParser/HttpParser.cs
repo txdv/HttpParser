@@ -360,6 +360,12 @@ namespace Test
 			}
 		}
 
+		public bool ShouldKeepAlive {
+			get {
+				return http_should_keep_alive(ParserPointer) != 0;
+			}
+		}
+
 		public void Execute(byte[] data, int length)
 		{
 			using (buffer = new ByteBuffer(data))
