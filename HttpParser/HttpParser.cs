@@ -136,8 +136,7 @@ namespace Test
 
 	unsafe public class HttpParser : IDisposable
 	{
-		GCHandle gchandle;
-		http_parser data;
+		http_parser *parser;
 		http_parser_settings settings;
 
 		Func<IntPtr, int>                 onMessageBegin;
@@ -157,10 +156,9 @@ namespace Test
 
 		public HttpParser(http_parser_type type)
 		{
-			data = new http_parser();
-			GCHandle.Alloc(this, GCHandleType.Pinned);
-			http_parser_init(DataPointer, type);
-			
+			ParserPointer = Marshal.AllocHGlobal(sizeof(http_parser));
+			http_parser_init(ParserPointer, type);
+
 			onMessageBegin    = OnMessageBegin;
 			onUrl             = OnUrl;
 			onHeaderField     = OnHeaderField;
@@ -176,6 +174,25 @@ namespace Test
 			settings.on_headers_complete = Marshal.GetFunctionPointerForDelegate(onHeadersComplete);
 			settings.on_body             = Marshal.GetFunctionPointerForDelegate(onBody);
 			settings.on_message_complete = Marshal.GetFunctionPointerForDelegate(onMessageComplete);
+		}
+
+		~HttpParser()
+		{
+			Dispose(false);
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		public virtual void Dispose(bool disposing)
+		{
+			if (ParserPointer != IntPtr.Zero) {
+				Marshal.FreeHGlobal(ParserPointer);
+			}
+			ParserPointer = IntPtr.Zero;
 		}
 
 		int OnMessageBegin(IntPtr ptr)
@@ -236,11 +253,12 @@ namespace Test
 			return 0;
 		}
 
-		IntPtr DataPointer {
+		IntPtr ParserPointer {
 			get {
-				fixed (http_parser *dataPtr = &data) {
-					return (IntPtr)dataPtr;	
-				}
+				return (IntPtr)parser;
+			}
+			set {
+				parser = (http_parser *)value;
 			}
 		}
 
@@ -253,8 +271,8 @@ namespace Test
 		}
 
 		public bool Upgrade {
-			get {	
-				return data.Upgrade;
+			get {
+				return parser->Upgrade;
 			}
 		}
 
@@ -262,7 +280,7 @@ namespace Test
 		{
 			using (buffer = new ByteBuffer(data))
 			{
-				http_parser_execute(DataPointer, SettingsPointer, buffer.Pointer, (IntPtr)length);
+				http_parser_execute(ParserPointer, SettingsPointer, buffer.Pointer, (IntPtr)length);
 			}
 			buffer = null;
 		}
@@ -276,11 +294,6 @@ namespace Test
 		{
 			byte[] data = enc.GetBytes(str);
 			Execute(data);
-		}
-
-		public void Dispose()
-		{
-			gchandle.Free();
 		}
 
 		[DllImport("http_parser")]
