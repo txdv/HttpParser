@@ -26,7 +26,6 @@ namespace Test
 
 		public bool Upgrade {
 			get {
-				Console.WriteLine (http_minor);
 				return (errorUpgrade & 128) == 128;
 			}
 		}
