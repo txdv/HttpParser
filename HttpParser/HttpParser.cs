@@ -7,6 +7,8 @@ namespace Test
 	[StructLayout(LayoutKind.Sequential)]
 	struct http_parser
 	{
+#pragma warning disable 0169
+		// yeah I know that they are not used!
 		byte typeFlags;
 		byte state;
 		byte header_state;
@@ -14,6 +16,7 @@ namespace Test
 
 		uint nread;
 		ulong content_length;
+#pragma warning restore 0169
 
 		// read only
 		public readonly short http_major;
