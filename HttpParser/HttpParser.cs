@@ -137,15 +137,18 @@ namespace Test
 		HPE_UNKNOWN
 	}
 
-	class ByteBuffer : IDisposable
+	class ByteBuffer
 	{
 		public byte[] Data { get; protected set; }
-		public GCHandle GCHandle { get; protected set; }
-		public IntPtr Pointer {
-			get {
-				return GCHandle.AddrOfPinnedObject();
-			}
+
+		public ByteBuffer(byte[] data, IntPtr pointer)
+		{
+			Data = data;
+			Pointer = pointer;
 		}
+
+		public IntPtr Pointer { get; private set; }
+
 		public int Start {
 			get {
 				return (int)Pointer;	
@@ -154,17 +157,6 @@ namespace Test
 		public int Position(IntPtr at)
 		{
 			return (int)at - Start;
-		}
-
-		public ByteBuffer(byte[] data)
-		{
-			Data = data;
-			GCHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
-		}
-
-		public void Dispose()
-		{
-			GCHandle.Free();
 		}
 	}
 
@@ -368,11 +360,11 @@ namespace Test
 
 		public void Execute(byte[] data, int length)
 		{
-			using (buffer = new ByteBuffer(data))
+			fixed (byte *ptr = data)
 			{
+				buffer = new ByteBuffer(data, (IntPtr)ptr);
 				http_parser_execute(ParserPointer, SettingsPointer, buffer.Pointer, (IntPtr)length);
 			}
-			buffer = null;
 		}
 
 		public void Execute(byte[] data)
