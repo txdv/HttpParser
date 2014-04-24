@@ -1,7 +1,7 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpParser", "HttpParser\HttpParser.csproj", "{075567E0-5182-42A0-BC75-09F51E5C6BFD}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpParser", "HttpParser\HttpParser.csproj", "{CEC2B2A3-A2F3-49BF-8F24-C52F6542E19D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,24 +9,31 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{075567E0-5182-42A0-BC75-09F51E5C6BFD}.Debug|x86.ActiveCfg = Debug|x86
-		{075567E0-5182-42A0-BC75-09F51E5C6BFD}.Debug|x86.Build.0 = Debug|x86
-		{075567E0-5182-42A0-BC75-09F51E5C6BFD}.Release|x86.ActiveCfg = Release|x86
-		{075567E0-5182-42A0-BC75-09F51E5C6BFD}.Release|x86.Build.0 = Release|x86
+		{CEC2B2A3-A2F3-49BF-8F24-C52F6542E19D}.Debug|x86.ActiveCfg = Debug|x86
+		{CEC2B2A3-A2F3-49BF-8F24-C52F6542E19D}.Debug|x86.Build.0 = Debug|x86
+		{CEC2B2A3-A2F3-49BF-8F24-C52F6542E19D}.Release|x86.ActiveCfg = Release|x86
+		{CEC2B2A3-A2F3-49BF-8F24-C52F6542E19D}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = HttpParser\HttpParser.csproj
 		Policies = $0
-		$0.TextStylePolicy = $1
-		$1.FileWidth = 120
-		$1.TabWidth = 4
-		$1.RemoveTrailingWhitespace = True
-		$1.inheritsSet = Mono
-		$1.inheritsScope = text/plain
-		$1.scope = text/x-csharp
-		$0.CSharpFormattingPolicy = $2
-		$2.inheritsSet = Mono
-		$2.inheritsScope = text/x-csharp
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = None
+		$1.ResourceNamePolicy = FileFormatDefault
+		$0.TextStylePolicy = $2
+		$2.inheritsSet = null
 		$2.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $3
+		$3.BeforeMethodDeclarationParentheses = False
+		$3.BeforeMethodCallParentheses = False
+		$3.BeforeConstructorDeclarationParentheses = False
+		$3.BeforeIndexerDeclarationBracket = False
+		$3.BeforeDelegateDeclarationParentheses = False
+		$3.AfterDelegateDeclarationParameterComma = True
+		$3.NewParentheses = False
+		$3.SpacesBeforeBrackets = False
+		$3.inheritsSet = Mono
+		$3.inheritsScope = text/x-csharp
+		$3.scope = text/x-csharp
 	EndGlobalSection
 EndGlobal
