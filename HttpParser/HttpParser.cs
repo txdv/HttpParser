@@ -137,29 +137,6 @@ namespace Test
 		HPE_UNKNOWN
 	}
 
-	class ByteBuffer
-	{
-		public byte[] Data { get; protected set; }
-
-		public ByteBuffer(byte[] data, IntPtr pointer)
-		{
-			Data = data;
-			Pointer = pointer;
-		}
-
-		public IntPtr Pointer { get; private set; }
-
-		public int Start {
-			get {
-				return (int)Pointer;	
-			}
-		}
-		public int Position(IntPtr at)
-		{
-			return (int)at - Start;
-		}
-	}
-
 	unsafe public class HttpParser : IDisposable
 	{
 		http_parser *parser;
@@ -172,8 +149,6 @@ namespace Test
 		Func<IntPtr, int>                 onHeadersComplete;
 		Func<IntPtr, IntPtr, IntPtr, int> onBody;
 		Func<IntPtr, int>                 onMessageComplete;
-
-		ByteBuffer buffer;
 
 		public HttpParser()
 			: this(http_parser_type.HTTP_BOTH)
@@ -227,15 +202,15 @@ namespace Test
 		}
 		int OnUrl(IntPtr ptr, IntPtr at, IntPtr length)
 		{
-			return OnUrl(buffer.Data, buffer.Position(at), (int)length);
+			return OnUrl(Data, Position(at), (int)length);
 		}
 		int OnHeaderField(IntPtr ptr, IntPtr at, IntPtr length)
 		{
-			return OnHeaderField(buffer.Data, buffer.Position(at), (int)length);
+			return OnHeaderField(Data, Position(at), (int)length);
 		}
 		int OnHeaderValue(IntPtr ptr, IntPtr at, IntPtr length)
 		{
-			return OnHeaderValue(buffer.Data, buffer.Position(at), (int)length);
+			return OnHeaderValue(Data, Position(at), (int)length);
 		}
 		int OnHeadersComplete(IntPtr ptr)
 		{
@@ -243,7 +218,7 @@ namespace Test
 		}
 		int OnBody(IntPtr ptr, IntPtr at, IntPtr length)
 		{
-			return OnBody(buffer.Data, buffer.Position(at), (int)length);
+			return OnBody(Data, Position(at), (int)length);
 		}
 		int OnMessageComplete(IntPtr ptr)
 		{
@@ -358,12 +333,27 @@ namespace Test
 			}
 		}
 
+		public byte[] Data { get; protected set; }
+
+		public IntPtr Pointer { get; private set; }
+
+		private int Start {
+			get {
+				return (int)Pointer;
+			}
+		}
+		private int Position(IntPtr at)
+		{
+			return (int)at - Start;
+		}
+
 		public void Execute(byte[] data, int length)
 		{
+			Data = data;
 			fixed (byte *ptr = data)
 			{
-				buffer = new ByteBuffer(data, (IntPtr)ptr);
-				http_parser_execute(ParserPointer, SettingsPointer, buffer.Pointer, (IntPtr)length);
+				Pointer = (IntPtr)ptr;
+				http_parser_execute(ParserPointer, SettingsPointer, Pointer, (IntPtr)length);
 			}
 		}
 
