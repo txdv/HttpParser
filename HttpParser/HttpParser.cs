@@ -421,7 +421,7 @@ namespace Test
 		public override int OnMessageBegin()
 		{
 			if (OnMessageBeginEvent != null) {
-				OnMessageBeginEvent();	
+				OnMessageBeginEvent();
 			}
 			
 			return base.OnMessageBegin();
