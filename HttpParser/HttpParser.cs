@@ -527,7 +527,7 @@ namespace Test
 				OnHeaderElementEvent(field, Encoding.GetString(data, start, count));
 			}
 
-			return base.OnHeaderValue (data, start, count);
+			return base.OnHeaderValue(data, start, count);
 		}
 	}
 }
