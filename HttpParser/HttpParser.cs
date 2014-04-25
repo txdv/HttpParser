@@ -347,25 +347,34 @@ namespace Test
 			return (int)at - Start;
 		}
 
-		public void Execute(byte[] data, int length)
+		public void Execute(byte[] data, int offset, int count)
 		{
 			Data = data;
 			fixed (byte *ptr = data)
 			{
-				Pointer = (IntPtr)ptr;
-				http_parser_execute(ParserPointer, SettingsPointer, Pointer, (IntPtr)length);
+				Pointer = (IntPtr)ptr + offset;
+				http_parser_execute(ParserPointer, SettingsPointer, Pointer, (IntPtr)count);
 			}
+		}
+
+		public void Execute(ArraySegment<byte> segment)
+		{
+			Execute(segment.Array, segment.Offset, segment.Count);
+		}
+
+		public void Execute(byte[] data, int offset)
+		{
+			Execute(data, offset, data.Length - offset);
 		}
 
 		public void Execute(byte[] data)
 		{
-			Execute(data, data.Length);
+			Execute(data, 0, data.Length);
 		}
 
 		public void Execute(Encoding enc, string str)
 		{
-			byte[] data = enc.GetBytes(str);
-			Execute(data);
+			Execute(enc.GetBytes(str));
 		}
 
 		[DllImport("http_parser")]
@@ -510,6 +519,11 @@ namespace Test
 			}
 
 			return base.OnHeaderValue(data, start, count);
+		}
+
+		public void Execute(string str)
+		{
+			Execute(Encoding == null ? Encoding.Default : Encoding, str);
 		}
 	}
 }
