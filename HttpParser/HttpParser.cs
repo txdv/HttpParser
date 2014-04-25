@@ -40,19 +40,6 @@ namespace Test
 		}
 	}
 
-	/*
-	struct http_parser_settings_clr
-	{
-		public Func<IntPtr, int>            on_message_begin;
-		public Func<IntPtr, IntPtr, IntPtr> on_url;
-		public Func<IntPtr, IntPtr, IntPtr> on_header_field;
-		public Func<IntPtr, IntPtr, IntPtr> on_header_value;
-		public Func<IntPtr, int>            on_header_complete;
-		public Func<IntPtr, IntPtr, IntPtr> on_body;
-		public Func<IntPtr>                 on_message_complete;
-	}
-	*/
-
 	[StructLayout(LayoutKind.Sequential)]
 	struct http_parser_settings
 	{
