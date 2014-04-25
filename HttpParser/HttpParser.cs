@@ -188,7 +188,7 @@ namespace Test
 			GC.SuppressFinalize(this);
 		}
 
-		public virtual void Dispose(bool disposing)
+		protected virtual void Dispose(bool disposing)
 		{
 			if (ParserPointer != IntPtr.Zero) {
 				Marshal.FreeHGlobal(ParserPointer);
@@ -225,31 +225,31 @@ namespace Test
 			return OnMessageComplete();
 		}
 
-		public virtual int OnMessageBegin()
+		protected virtual int OnMessageBegin()
 		{
 			return 0;
 		}
-		public virtual int OnUrl(byte[] data, int start, int count)
+		protected virtual int OnUrl(byte[] data, int start, int count)
 		{
 			return 0;
 		}
-		public virtual int OnHeaderField(byte[] data, int start, int count)
+		protected virtual int OnHeaderField(byte[] data, int start, int count)
 		{
 			return 0;
 		}
-		public virtual int OnHeaderValue(byte[] data, int start, int count)
+		protected virtual int OnHeaderValue(byte[] data, int start, int count)
 		{
 			return 0;
 		}
-		public virtual int OnHeadersComplete()
+		protected virtual int OnHeadersComplete()
 		{
 			return 0;
 		}
-		public virtual int OnBody(byte[] data, int start, int count)
+		protected virtual int OnBody(byte[] data, int start, int count)
 		{
 			return 0;
 		}
-		public virtual int OnMessageComplete()
+		protected virtual int OnMessageComplete()
 		{
 			return 0;
 		}
@@ -409,7 +409,7 @@ namespace Test
 		}
 
 		public event Action OnMessageBeginEvent;
-		public override int OnMessageBegin()
+		protected override int OnMessageBegin()
 		{
 			if (OnMessageBeginEvent != null) {
 				OnMessageBeginEvent();
@@ -419,7 +419,7 @@ namespace Test
 		}
 
 		public event Action<byte[], int, int> OnUrlEvent;
-		public override int OnUrl(byte[] data, int start, int count)
+		protected override int OnUrl(byte[] data, int start, int count)
 		{
 			if (OnUrlEvent != null) {
 				OnUrlEvent(data, start, count);
@@ -428,7 +428,7 @@ namespace Test
 		}
 
 		public event Action<byte[], int, int> OnHeaderFieldEvent;
-		public override int OnHeaderField(byte[] data, int start, int count)
+		protected override int OnHeaderField(byte[] data, int start, int count)
 		{
 			if (OnHeaderFieldEvent != null) {
 				OnHeaderFieldEvent(data, start, count);
@@ -438,7 +438,7 @@ namespace Test
 		}
 
 		public event Action<byte[], int, int> OnHeaderValueEvent;
-		public override int OnHeaderValue(byte[] data, int start, int count)
+		protected override int OnHeaderValue(byte[] data, int start, int count)
 		{
 			if (OnHeaderValueEvent != null) {
 				OnHeaderValueEvent(data, start, count);
@@ -448,7 +448,7 @@ namespace Test
 		}
 
 		public event Action OnHeadersCompleteEvent;
-		public override int OnHeadersComplete()
+		protected override int OnHeadersComplete()
 		{
 			if (OnHeadersCompleteEvent != null) {
 				OnHeadersCompleteEvent();
@@ -458,7 +458,7 @@ namespace Test
 		}
 
 		public event Action<byte[], int, int> OnBodyEvent;
-		public override int OnBody(byte[] data, int start, int count)
+		protected override int OnBody(byte[] data, int start, int count)
 		{
 			if (OnBodyEvent != null) {
 				OnBodyEvent(data, start, count);
@@ -467,7 +467,7 @@ namespace Test
 		}
 
 		public event Action OnMessageCompleteEvent;
-		public override int OnMessageComplete()
+		protected override int OnMessageComplete()
 		{
 			if (OnMessageCompleteEvent != null) {
 				OnMessageCompleteEvent();
@@ -505,14 +505,14 @@ namespace Test
 		public Action<string, string> OnHeaderElementEvent;
 
 		string field = null;
-		public override int OnHeaderField(byte[] data, int start, int count)
+		protected override int OnHeaderField(byte[] data, int start, int count)
 		{
 			field = Encoding.GetString(data, start, count);
 
 			return base.OnHeaderField(data, start, count);
 		}
 
-		public override int OnHeaderValue(byte[] data, int start, int count)
+		protected override int OnHeaderValue(byte[] data, int start, int count)
 		{
 			if (OnHeaderElementEvent != null) {
 				OnHeaderElementEvent(field, Encoding.GetString(data, start, count));
