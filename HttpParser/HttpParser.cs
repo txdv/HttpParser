@@ -231,20 +231,20 @@ namespace Test
 			return 0;
 		}
 
-		IntPtr ParserPointer {
+		public IntPtr ParserPointer {
 			get {
 				return (IntPtr)parser;
 			}
-			set {
+			private set {
 				parser = (http_parser *)value;
 			}
 		}
 
-		IntPtr SettingsPointer {
+		public IntPtr SettingsPointer {
 			get {
 				return (IntPtr)settings;
 			}
-			set {
+			private set {
 				settings = (http_parser_settings *)value;
 			}
 		}
