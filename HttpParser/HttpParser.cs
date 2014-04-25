@@ -2,7 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Test
+namespace HttpParser
 {
 	[StructLayout(LayoutKind.Sequential)]
 	struct http_parser
