@@ -140,7 +140,7 @@ namespace Test
 	unsafe public class RawHttpParser : IDisposable
 	{
 		http_parser *parser;
-		http_parser_settings settings;
+		http_parser_settings *settings;
 
 		Func<IntPtr, int>                 onMessageBegin;
 		Func<IntPtr, IntPtr, IntPtr, int> onUrl;
@@ -158,6 +158,7 @@ namespace Test
 		public RawHttpParser(http_parser_type type)
 		{
 			ParserPointer = Marshal.AllocHGlobal(sizeof(http_parser));
+			SettingsPointer = Marshal.AllocHGlobal(sizeof(http_parser));
 			http_parser_init(ParserPointer, type);
 
 			onMessageBegin    = OnMessageBegin;
@@ -168,13 +169,13 @@ namespace Test
 			onBody            = OnBody;
 			onMessageComplete = OnMessageComplete;
 
-			settings.on_message_begin    = Marshal.GetFunctionPointerForDelegate(onMessageBegin);
-			settings.on_url              = Marshal.GetFunctionPointerForDelegate(onUrl);
-			settings.on_header_field     = Marshal.GetFunctionPointerForDelegate(onHeaderField);
-			settings.on_header_value     = Marshal.GetFunctionPointerForDelegate(onHeaderValue);
-			settings.on_headers_complete = Marshal.GetFunctionPointerForDelegate(onHeadersComplete);
-			settings.on_body             = Marshal.GetFunctionPointerForDelegate(onBody);
-			settings.on_message_complete = Marshal.GetFunctionPointerForDelegate(onMessageComplete);
+			settings->on_message_begin    = Marshal.GetFunctionPointerForDelegate(onMessageBegin);
+			settings->on_url              = Marshal.GetFunctionPointerForDelegate(onUrl);
+			settings->on_header_field     = Marshal.GetFunctionPointerForDelegate(onHeaderField);
+			settings->on_header_value     = Marshal.GetFunctionPointerForDelegate(onHeaderValue);
+			settings->on_headers_complete = Marshal.GetFunctionPointerForDelegate(onHeadersComplete);
+			settings->on_body             = Marshal.GetFunctionPointerForDelegate(onBody);
+			settings->on_message_complete = Marshal.GetFunctionPointerForDelegate(onMessageComplete);
 		}
 
 		~RawHttpParser()
@@ -194,6 +195,11 @@ namespace Test
 				Marshal.FreeHGlobal(ParserPointer);
 			}
 			ParserPointer = IntPtr.Zero;
+
+			if (SettingsPointer != IntPtr.Zero) {
+				Marshal.FreeHGlobal(SettingsPointer);
+			}
+			SettingsPointer = IntPtr.Zero;
 		}
 
 		protected virtual int OnMessageBegin(IntPtr ptr)
@@ -236,9 +242,10 @@ namespace Test
 
 		IntPtr SettingsPointer {
 			get {
-				fixed (http_parser_settings *settingsPtr = &settings) {
-					return (IntPtr)settingsPtr;
-				}
+				return (IntPtr)settings;
+			}
+			set {
+				settings = (http_parser_settings *)value;
 			}
 		}
 
