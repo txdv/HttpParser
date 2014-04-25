@@ -35,5 +35,13 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="HttpParser.cs" />
+    <Compile Include="EncodedHttpParser.cs" />
+    <Compile Include="EventedHttpParser.cs" />
+    <Compile Include="http_parser.cs" />
+    <Compile Include="http_parser_settings.cs" />
+    <Compile Include="RawHttpParser.cs" />
+    <Compile Include="http_method.cs" />
+    <Compile Include="http_parser_type.cs" />
+    <Compile Include="http_errno.cs" />
   </ItemGroup>
 </Project>
