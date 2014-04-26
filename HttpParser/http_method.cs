@@ -2,7 +2,7 @@ using System;
 
 namespace HttpParser
 {
-	public enum http_method
+	public enum http_method : int
 	{
 		HTTP_DELETE,
 		HTTP_GET,
@@ -17,7 +17,8 @@ namespace HttpParser
 		HTTP_MKCOL,
 		HTTP_MOVE,
 		HTTP_PROPFIND,
-		HTTP_PROPATCH,
+		HTTP_PROPPATCH,
+		HTTP_SEARCH,
 		HTTP_UNLOCK,
 		HTTP_REPORT,
 		HTTP_MKACTIVITY,
@@ -25,9 +26,9 @@ namespace HttpParser
 		HTTP_MERGE,
 		HTTP_MSEARCH,
 		HTTP_NOTIFY,
-		HTTP_SUSCRIBE,
+		HTTP_SUBSCRIBE,
 		HTTP_UNSUBSCRIBE,
 		HTTP_PATCH,
+		HTTP_PURGE,
 	}
 }
-

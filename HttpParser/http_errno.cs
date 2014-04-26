@@ -2,21 +2,17 @@ using System;
 
 namespace HttpParser
 {
-	public enum http_errno
+	public enum http_errno : int
 	{
 		HPE_OK,
-
 		HPE_CB_message_begin,
-		HPE_CB_path,
-		HPE_CB_query_string,
 		HPE_CB_url,
-		HPE_CB_fragment,
 		HPE_CB_header_field,
 		HPE_CB_header_value,
 		HPE_CB_headers_complete,
 		HPE_CB_body,
 		HPE_CB_message_complete,
-
+		HPE_CB_status,
 		HPE_INVALID_EOF_STATE,
 		HPE_HEADER_OVERFLOW,
 		HPE_CLOSED_CONNECTION,
@@ -36,7 +32,7 @@ namespace HttpParser
 		HPE_INVALID_CONSTANT,
 		HPE_INVALID_INTERNAL_STATE,
 		HPE_STRICT,
-		HPE_UNKNOWN
+		HPE_PAUSED,
+		HPE_UNKNOWN,
 	}
 }
-
