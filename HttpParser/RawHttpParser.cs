@@ -211,6 +211,9 @@ namespace HttpParser
 
 		[DllImport("http_parser")]
 		private static extern sbyte *http_errno_description(http_errno err);
+
+		[DllImport("http_parser")]
+		internal static extern long http_parser_version();
 	}
 }
 

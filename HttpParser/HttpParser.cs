@@ -127,6 +127,23 @@ namespace HttpParser
 		{
 			Execute(enc.GetBytes(str));
 		}
+
+		public static long LongVersion {
+			get {
+				return http_parser_version();
+			}
+		}
+
+		public static Version Version {
+			get {
+				var version = LongVersion;
+				return new Version(
+					(int)((version >> 16) & 255),
+					(int)((version >> 8) & 255),
+					(int)(version & 255)
+				);
+			}
+		}
 	}
 }
 
