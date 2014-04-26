@@ -30,21 +30,49 @@ namespace HttpParser
 
 		public Action<string, string> OnHeaderElementEvent;
 
-		string field = null;
+
+		void YieldHeaderElement()
+		{
+			if (OnHeaderElementEvent != null) {
+				OnHeaderElementEvent(field, value);
+			}
+
+			// maybe the gc wants to collects those strings someday, but
+			// won't since the HttpParser is not freed
+			field = string.Empty;
+			value = string.Empty;
+		}
+
+		bool fieldParsed = false;
+
+		string field = string.Empty;
 		protected override int OnHeaderField(byte[] data, int start, int count)
 		{
-			field = Encoding.GetString(data, start, count);
+			if (fieldParsed) {
+				YieldHeaderElement();
+				fieldParsed = false;
+			}
+
+			field += Encoding.GetString(data, start, count);
 
 			return base.OnHeaderField(data, start, count);
 		}
 
+		string value = string.Empty;
 		protected override int OnHeaderValue(byte[] data, int start, int count)
 		{
-			if (OnHeaderElementEvent != null) {
-				OnHeaderElementEvent(field, Encoding.GetString(data, start, count));
-			}
+			fieldParsed = true;
+
+			value += Encoding.GetString(data, start, count);
 
 			return base.OnHeaderValue(data, start, count);
+		}
+
+		protected override int OnHeadersComplete()
+		{
+			YieldHeaderElement();
+
+			return base.OnHeadersComplete();
 		}
 
 		public void Execute(string str)
