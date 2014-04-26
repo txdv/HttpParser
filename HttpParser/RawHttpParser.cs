@@ -204,6 +204,17 @@ namespace HttpParser
 			http_parser_pause(ParserPointer, 0);
 		}
 
+		/// <summary>
+		/// Shows if the currently parsed chunk file is final, works only within
+		/// the the OnBody method
+		/// </summary>
+		/// <value><c>true</c> if http body is final; otherwise, <c>false</c>.</value>
+		public bool HttpBodyIsFinal {
+			get {
+				return http_body_is_final(ParserPointer) != 0;
+			}
+		}
+
 		[DllImport("http_parser")]
 		private static extern void http_parser_init(IntPtr parser, http_parser_type type);
 
@@ -227,6 +238,9 @@ namespace HttpParser
 
 		[DllImport("http_parser")]
 		internal static extern void http_parser_pause(IntPtr parser, int paused);
+
+		[DllImport("http_parser")]
+		internal static extern int http_body_is_final(IntPtr parser);
 	}
 }
 
