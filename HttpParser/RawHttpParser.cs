@@ -194,6 +194,16 @@ namespace HttpParser
 			http_parser_execute(ParserPointer, SettingsPointer, Pointer, (IntPtr)count);
 		}
 
+		public void Pause()
+		{
+			http_parser_pause(ParserPointer, 1);
+		}
+
+		public void Unpause()
+		{
+			http_parser_pause(ParserPointer, 0);
+		}
+
 		[DllImport("http_parser")]
 		private static extern void http_parser_init(IntPtr parser, http_parser_type type);
 
@@ -214,6 +224,9 @@ namespace HttpParser
 
 		[DllImport("http_parser")]
 		internal static extern long http_parser_version();
+
+		[DllImport("http_parser")]
+		internal static extern void http_parser_pause(IntPtr parser, int paused);
 	}
 }
 
