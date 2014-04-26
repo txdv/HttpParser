@@ -33,6 +33,10 @@ namespace HttpParser
 		{
 			return OnUrl(Data, Position(at), (int)length);
 		}
+		protected override int OnStatus(IntPtr ptr, IntPtr at, IntPtr length)
+		{
+			return OnStatus(Data, Position(at), (int)length);
+		}
 		protected override int OnHeaderField(IntPtr ptr, IntPtr at, IntPtr length)
 		{
 			return OnHeaderField(Data, Position(at), (int)length);
@@ -59,6 +63,10 @@ namespace HttpParser
 			return 0;
 		}
 		protected virtual int OnUrl(byte[] data, int start, int count)
+		{
+			return 0;
+		}
+		protected virtual int OnStatus(byte[] data, int start, int count)
 		{
 			return 0;
 		}

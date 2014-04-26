@@ -10,6 +10,7 @@ namespace HttpParser
 
 		Func<IntPtr, int>                 onMessageBegin;
 		Func<IntPtr, IntPtr, IntPtr, int> onUrl;
+		Func<IntPtr, IntPtr, IntPtr, int> onStatus;
 		Func<IntPtr, IntPtr, IntPtr, int> onHeaderField;
 		Func<IntPtr, IntPtr, IntPtr, int> onHeaderValue;
 		Func<IntPtr, int>                 onHeadersComplete;
@@ -29,6 +30,7 @@ namespace HttpParser
 
 			onMessageBegin    = OnMessageBegin;
 			onUrl             = OnUrl;
+			onStatus          = OnStatus;
 			onHeaderField     = OnHeaderField;
 			onHeaderValue     = OnHeaderValue;
 			onHeadersComplete = OnHeadersComplete;
@@ -36,6 +38,7 @@ namespace HttpParser
 			onMessageComplete = OnMessageComplete;
 
 			settings->on_message_begin    = Marshal.GetFunctionPointerForDelegate(onMessageBegin);
+			settings->on_status           = Marshal.GetFunctionPointerForDelegate(onStatus);
 			settings->on_url              = Marshal.GetFunctionPointerForDelegate(onUrl);
 			settings->on_header_field     = Marshal.GetFunctionPointerForDelegate(onHeaderField);
 			settings->on_header_value     = Marshal.GetFunctionPointerForDelegate(onHeaderValue);
@@ -57,6 +60,7 @@ namespace HttpParser
 
 		protected virtual void Dispose(bool disposing)
 		{
+			/*
 			if (ParserPointer != IntPtr.Zero) {
 				Marshal.FreeHGlobal(ParserPointer);
 			}
@@ -66,6 +70,7 @@ namespace HttpParser
 				Marshal.FreeHGlobal(SettingsPointer);
 			}
 			SettingsPointer = IntPtr.Zero;
+			*/
 		}
 
 		protected virtual int OnMessageBegin(IntPtr ptr)
@@ -73,6 +78,10 @@ namespace HttpParser
 			return 0;
 		}
 		protected virtual int OnUrl(IntPtr ptr, IntPtr at, IntPtr length)
+		{
+			return 0;
+		}
+		protected virtual int OnStatus(IntPtr ptr, IntPtr at, IntPtr length)
 		{
 			return 0;
 		}

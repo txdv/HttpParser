@@ -32,6 +32,16 @@ namespace HttpParser
 			return base.OnUrl (data, start, count);
 		}
 
+		public event Action<byte[], int, int> OnStatusEvent;
+		protected override int OnStatus(byte[] data, int start, int count)
+		{
+			if (OnStatusEvent != null) {
+				OnStatusEvent(data, start, count);
+			}
+
+			return base.OnHeaderField(data, start, count);
+		}
+
 		public event Action<byte[], int, int> OnHeaderFieldEvent;
 		protected override int OnHeaderField(byte[] data, int start, int count)
 		{

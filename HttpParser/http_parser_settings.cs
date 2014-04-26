@@ -8,6 +8,7 @@ namespace HttpParser
 	{
 		public IntPtr on_message_begin;
 		public IntPtr on_url;
+		public IntPtr on_status;
 		public IntPtr on_header_field;
 		public IntPtr on_header_value;
 		public IntPtr on_headers_complete;
