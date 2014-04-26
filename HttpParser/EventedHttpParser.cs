@@ -1,55 +1,84 @@
 using System;
-using System.Text;
 
 namespace HttpParser
 {
-	public class EncodedHttpParser : EventedHttpParser
+	public class EventedHttpParser : HttpParser
 	{
-		public Encoding Encoding { get; protected set; }
-
-		public EncodedHttpParser()
-			: this(Encoding.Default)
+		public EventedHttpParser()
+			: base()
 		{
 		}
 
-		public EncodedHttpParser(Encoding enc)
-			: this(http_parser_type.HTTP_BOTH, enc)
-		{
-		}
-
-		public EncodedHttpParser(http_parser_type type)
-			: this(type, Encoding.Default)
-		{
-		}
-
-		public EncodedHttpParser(http_parser_type type, Encoding enc)
+		public EventedHttpParser(http_parser_type type)
 			: base(type)
 		{
-			Encoding = enc;
 		}
 
-		public Action<string, string> OnHeaderElementEvent;
+		public event Action OnMessageBeginEvent;
+		protected override int OnMessageBegin()
+		{
+			if (OnMessageBeginEvent != null) {
+				OnMessageBeginEvent();
+			}
+			return base.OnMessageBegin();
+		}
 
-		string field = null;
+		public event Action<byte[], int, int> OnUrlEvent;
+		protected override int OnUrl(byte[] data, int start, int count)
+		{
+			if (OnUrlEvent != null) {
+				OnUrlEvent(data, start, count);
+			}
+			return base.OnUrl (data, start, count);
+		}
+
+		public event Action<byte[], int, int> OnHeaderFieldEvent;
 		protected override int OnHeaderField(byte[] data, int start, int count)
 		{
-			field = Encoding.GetString(data, start, count);
+			if (OnHeaderFieldEvent != null) {
+				OnHeaderFieldEvent(data, start, count);
+			}
 
 			return base.OnHeaderField(data, start, count);
 		}
 
+		public event Action<byte[], int, int> OnHeaderValueEvent;
 		protected override int OnHeaderValue(byte[] data, int start, int count)
 		{
-			if (OnHeaderElementEvent != null) {
-				OnHeaderElementEvent(field, Encoding.GetString(data, start, count));
+			if (OnHeaderValueEvent != null) {
+				OnHeaderValueEvent(data, start, count);
 			}
 
 			return base.OnHeaderValue(data, start, count);
 		}
 
-		public void Execute(string str)
+		public event Action OnHeadersCompleteEvent;
+		protected override int OnHeadersComplete()
 		{
-			Execute(Encoding == null ? Encoding.Default : Encoding, str);
+			if (OnHeadersCompleteEvent != null) {
+				OnHeadersCompleteEvent();
+			}
+
+			return base.OnHeadersComplete ();
+		}
+
+		public event Action<byte[], int, int> OnBodyEvent;
+		protected override int OnBody(byte[] data, int start, int count)
+		{
+			if (OnBodyEvent != null) {
+				OnBodyEvent(data, start, count);
+			}
+			return base.OnBody(data, start, count);
+		}
+
+		public event Action OnMessageCompleteEvent;
+		protected override int OnMessageComplete()
+		{
+			if (OnMessageCompleteEvent != null) {
+				OnMessageCompleteEvent();
+			}
+
+			return base.OnMessageComplete();
 		}
 	}
 }
