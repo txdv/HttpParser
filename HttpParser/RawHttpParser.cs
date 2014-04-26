@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace HttpParser
 {
-	unsafe public class RawHttpParser : IDisposable
+	unsafe public partial class RawHttpParser : IDisposable
 	{
 		http_parser *parser;
 		http_parser_settings *settings;
@@ -145,6 +145,12 @@ namespace HttpParser
 		public http_method Method {
 			get {
 				return (http_method)parser->method;
+			}
+		}
+
+		public string MethodString {
+			get {
+				return methodString[(int)Method];
 			}
 		}
 

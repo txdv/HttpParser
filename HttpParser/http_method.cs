@@ -31,4 +31,36 @@ namespace HttpParser
 		HTTP_PATCH,
 		HTTP_PURGE,
 	}
+
+	public partial class RawHttpParser
+	{
+		private static string[] methodString = new string[] {
+			"DELETE",
+			"GET",
+			"HEAD",
+			"POST",
+			"PUT",
+			"CONNECT",
+			"OPTIONS",
+			"TRACE",
+			"COPY",
+			"LOCK",
+			"MKCOL",
+			"MOVE",
+			"PROPFIND",
+			"PROPPATCH",
+			"SEARCH",
+			"UNLOCK",
+			"REPORT",
+			"MKACTIVITY",
+			"CHECKOUT",
+			"MERGE",
+			"MSEARCH",
+			"NOTIFY",
+			"SUBSCRIBE",
+			"UNSUBSCRIBE",
+			"PATCH",
+			"PURGE",
+		};
+	}
 }

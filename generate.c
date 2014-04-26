@@ -8,6 +8,12 @@ void print_http()
 #define XX(num, name, string) printf("\t\tHTTP_%s,\n", #name, num);
 	HTTP_METHOD_MAP(XX)
 #undef XX
+	printf("\t}\n\n");
+	printf("\tpublic partial class RawHttpParser\n\t{\n\t\tprivate static string[] methodString = new string[] {\n");
+#define XX(num, name, string) printf("\t\t\t\"%s\",\n", #name, num);
+	HTTP_METHOD_MAP(XX)
+#undef XX
+	printf("\t\t};\n");
 	printf("\t}\n}\n");
 }
 
