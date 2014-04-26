@@ -24,7 +24,7 @@ namespace HttpParser
 		public RawHttpParser(http_parser_type type)
 		{
 			ParserPointer = Marshal.AllocHGlobal(sizeof(http_parser));
-			SettingsPointer = Marshal.AllocHGlobal(sizeof(http_parser));
+			SettingsPointer = Marshal.AllocHGlobal(sizeof(http_parser_settings));
 			http_parser_init(ParserPointer, type);
 
 			onMessageBegin    = OnMessageBegin;
