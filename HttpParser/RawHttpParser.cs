@@ -174,7 +174,7 @@ namespace HttpParser
 
 		public string ErrorDescription {
 			get {
-				return new string(http_errno_description(Errno));
+				return errorString[(int)Errno];
 			}
 		}
 

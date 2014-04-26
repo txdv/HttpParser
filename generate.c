@@ -21,9 +21,14 @@ void print_errno()
 {
 	printf("using System;\n\nnamespace HttpParser\n{\n\tpublic enum http_errno : int\n\t{\n");
 #define HTTP_ERRNO_GEN(n, s) printf("\t\tHPE_%s,\n", #n);
+	HTTP_ERRNO_MAP(HTTP_ERRNO_GEN)
+#undef HTTP_ERRNO_GEN
+	printf("\t}\n\n");
+	printf("\tpublic partial class RawHttpParser\n\t{\n\t\tprivate static string[] errorString = new string[] {\n");
+#define HTTP_ERRNO_GEN(n, s) printf("\t\t\t%s,\n", #s);
   HTTP_ERRNO_MAP(HTTP_ERRNO_GEN)
 #undef HTTP_ERRNO_GEN
-	printf("\t}\n}\n");
+	printf("\t\t};\n\t}\n}\n");
 }
 
 void usage()

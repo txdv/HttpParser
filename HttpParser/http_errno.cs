@@ -35,4 +35,40 @@ namespace HttpParser
 		HPE_PAUSED,
 		HPE_UNKNOWN,
 	}
+
+	public partial class RawHttpParser
+	{
+		private static string[] errorString = new string[] {
+			"success",
+			"the on_message_begin callback failed",
+			"the on_url callback failed",
+			"the on_header_field callback failed",
+			"the on_header_value callback failed",
+			"the on_headers_complete callback failed",
+			"the on_body callback failed",
+			"the on_message_complete callback failed",
+			"the on_status callback failed",
+			"stream ended at an unexpected time",
+			"too many header bytes seen; overflow detected",
+			"data received after completed connection: close message",
+			"invalid HTTP version",
+			"invalid HTTP status code",
+			"invalid HTTP method",
+			"invalid URL",
+			"invalid host",
+			"invalid port",
+			"invalid path",
+			"invalid query string",
+			"invalid fragment",
+			"LF character expected",
+			"invalid character in header",
+			"invalid character in content-length header",
+			"invalid character in chunk size header",
+			"invalid constant string",
+			"encountered unexpected internal state",
+			"strict mode assertion failed",
+			"parser is paused",
+			"an unknown error occurred",
+		};
+	}
 }
