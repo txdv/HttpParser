@@ -2,7 +2,7 @@ using System;
 
 namespace HttpParser
 {
-	public class EventedHttpParser : HttpParser
+	public class EventedHttpParser : EncodedHttpParser
 	{
 		public EventedHttpParser()
 			: base()

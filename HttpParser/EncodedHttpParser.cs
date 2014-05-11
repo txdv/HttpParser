@@ -3,7 +3,7 @@ using System.Text;
 
 namespace HttpParser
 {
-	public class EncodedHttpParser : EventedHttpParser
+	public class EncodedHttpParser : HttpParser
 	{
 		public Encoding Encoding { get; protected set; }
 
